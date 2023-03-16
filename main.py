@@ -150,17 +150,55 @@ def merc_tp_barrens_hq(screenWidth, screenHeight):
     clickImageOnScreen("images/Play.png",screenWidth, screenHeight)
     time.sleep(20)
 
-    #Select Heros    
-    endTurn()
-    time.sleep(2)
-
-    #Play rounds
-    time.sleep(2)
-    print("Playing rounds")
-    while is_image_on_screen("images/PickTreas.png",screenWidth, screenHeight) == False:
-        time.sleep(1)
-        print("ending turn")
+    while True:
+        #Select Heros    
         endTurn()
+        time.sleep(2)
+
+        #Play rounds
+        time.sleep(2)
+        print("Playing rounds")
+        while is_image_on_screen("images/PickTreas.png",screenWidth, screenHeight) == False:
+            time.sleep(1)
+            while is_image_on_screen("images/FightYellow.png",screenWidth, screenHeight) :
+                time.sleep(1)
+                #Select first Ability
+                pyautogui.moveTo(screenWidth * 0.3984, screenHeight *  0.4444)
+                pyautogui.click()
+                time.sleep(2)
+                gab = 0
+                while (not is_image_on_screen("images/AbillitiesBoarderWarrior.png",screenWidth, screenHeight)) and ( not is_image_on_screen("images/AbillitiesBoarderFighter.png",screenWidth, screenHeight) and ( not is_image_on_screen("images/AbillitiesBoarderCaster.png",screenWidth, screenHeight)) and ( not is_image_on_screen("images/AbillitiesBoarderNetrual.png",screenWidth, screenHeight)) and is_image_on_screen("images/FightYellow.png",screenWidth, screenHeight)) :
+                    #trying to hit enemy
+                    pyautogui.moveTo((screenWidth * 0.2507) + gab, screenHeight * 0.2715)
+                    pyautogui.click()
+                    time.sleep(0.5)
+                    gab += 100
+            
+            endTurn()
+            time.sleep(2)
+        
+        #Click take to take treasure
+        time.sleep(1)
+        print("choosing treasure")
+        pyautogui.moveTo((screenWidth * 0.5) + gab, screenHeight * 0.5)
+        pyautogui.click()
+        time.sleep(3)
+        print("clicking take")
+        clickImageOnScreen("images/TakeTreasure.png",screenWidth, screenHeight)
+        time.sleep(2)
+
+        #Chose next battle
+        gab=0
+        while (not is_image_on_screen("images/Play.png",screenWidth, screenHeight)):
+            pyautogui.moveTo((screenWidth * 0.2) + gab, screenHeight * 0.5)
+            pyautogui.click()
+            time.sleep(0.5)
+            gab +=100
+        
+        #Select the Play in button
+        time.sleep(1)
+        clickImageOnScreen("images/Play.png",screenWidth, screenHeight)
+        time.sleep(20)
 
     #endTurn()
     
@@ -185,17 +223,16 @@ def main():
     screenWidth, screenHeight = pyautogui.size()
 
     merc_tp_barrens_hq(screenWidth, screenHeight)
+    input()
 
-'''
     # Get mouse location in percentage
     xPercent, yPercent = getMousePercentage(screenWidth, screenHeight)
+    print(xPercent, yPercent)
+    top, left, width, height = (xPercent * screenWidth ) , (yPercent * screenHeight)  ,(xPercent * screenWidth)  + 100, (yPercent * screenHeight) + 50
+    #save_screenshot(top, left, width, height ,"images/TakeTreasure.png")
 
-    top, left, width, height =xPercent * screenWidth  , yPercent * screenHeight ,(xPercent * screenWidth)  + 200, (yPercent * screenHeight) + 75
-    save_screenshot(top, left, width, height ,"images/PickTreas.png")
+    clickImageOnScreen("images/TakeTreasure.png",screenWidth, screenHeight)
 
-    clickImageOnScreen("images/PickTreas.png",screenWidth, screenHeight)
-'''
-    
 
 
 # Run the main function
